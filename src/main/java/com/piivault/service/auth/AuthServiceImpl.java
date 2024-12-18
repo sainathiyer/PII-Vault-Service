@@ -1,6 +1,8 @@
 package com.piivault.service.auth;
 
 import com.piivault.domain.User;
+import com.piivault.dto.SignupRequest;
+import com.piivault.dto.UserDto;
 import com.piivault.enums.UserRole;
 import com.piivault.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,4 +34,19 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
+    @Override
+    public UserDto signupUser(SignupRequest signupRequest) {
+        User user = new User();
+        user.setEmail(signupRequest.getEmail());
+        user.setUsername(signupRequest.getName());
+        user.setPassword(new BCryptPasswordEncoder().encode(signupRequest.getPassword()));
+        user.setUserRole(UserRole.CLIENT);
+        User createdUser = userRepository.save(user);
+        return createdUser.getUserDto();
+    }
+
+    @Override
+    public boolean hasUserWithEmail(String email) {
+        return userRepository.findFirstByEmail(email).isPresent();
+    }
 }

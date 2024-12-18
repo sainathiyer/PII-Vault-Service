@@ -1,5 +1,6 @@
 package com.piivault.domain;
 
+import com.piivault.dto.UserDto;
 import com.piivault.enums.UserRole;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -59,6 +60,15 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public UserDto getUserDto() {
+        UserDto userDto = new UserDto();
+        userDto.setId(id);
+        userDto.setName(username);
+        userDto.setEmail(email);
+        userDto.setUserRole(userRole);
+        return userDto;
     }
 
 }
